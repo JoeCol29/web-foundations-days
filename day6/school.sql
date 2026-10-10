@@ -42,17 +42,17 @@ INSERT INTO courses (title, code, credits) VALUES
 ('Data Structures', 'CS301', 3);
 
 -- Insert Sample Data: Enrollments (5 total)
--- Alice takes SQL and Web Dev
+-- Njomane takes SQL and Web Dev
 INSERT INTO enrollments (student_id, course_id, grade) VALUES 
 (1, 1, 'A'),
 (1, 2, 'B+');
 
--- Bob takes SQL and Data Structures
+-- Mokoena takes SQL and Data Structures
 INSERT INTO enrollments (student_id, course_id, grade) VALUES 
 (2, 1, 'B'),
 (2, 3, 'A-');
 
--- Charlie takes only Web Dev
+-- Mcunu takes only Web Dev
 INSERT INTO enrollments (student_id, course_id, grade) VALUES 
 (3, 2, 'A');
 
@@ -63,7 +63,7 @@ SELECT c.title, c.code, e.grade
 FROM courses c
 JOIN enrollments e ON c.id = e.course_id
 JOIN students s ON e.student_id = s.id
-WHERE s.first_name = 'Alice' AND s.last_name = 'Johnson';
+WHERE s.first_name = 'Njomane' AND s.last_name = 'Johnson';
 
 -- 2. All students on one course: Intro to SQL
 SELECT s.first_name, s.last_name, s.email, e.grade
@@ -85,7 +85,7 @@ FROM students s
 LEFT JOIN enrollments e ON s.id = e.student_id
 WHERE e.student_id IS NULL;
 
--- 5. An update of one enrolment's grade: Alice's SQL grade from 'A' to 'A+'
+-- 5. An update of one enrolment's grade: Njomane's SQL grade from 'A' to 'A+'
 UPDATE enrollments
 SET grade = 'A+'
 WHERE student_id = 1 AND course_id = 1;
