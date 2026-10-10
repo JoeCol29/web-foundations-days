@@ -24,6 +24,7 @@ CREATE TABLE enrollments (
     grade TEXT,
     enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (student_id, course_id),
+    UNIQUE (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
