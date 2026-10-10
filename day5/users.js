@@ -30,23 +30,6 @@ statusEl.textContent = `${list.length} user(s) found.`;
   });
 }
 
-  list.forEach((user) => {
-    const li = document.createElement("li");
-
-    const name = document.createElement("strong");
-    name.textContent = user.name;
-
-    const email = document.createElement("span");
-    email.textContent = ` — ${user.email}`;
-
-    const details = document.createElement("div");
-    details.textContent = `City: ${user.address.city} | Company: ${user.company.name}`;
-
-    li.append(name, email, details);
-    usersList.appendChild(li);
-  });
-}
-
 async function loadUsers() {
   loadBtn.disabled = true;
   statusEl.textContent = "Loading...";
