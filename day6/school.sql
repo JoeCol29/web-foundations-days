@@ -24,7 +24,6 @@ CREATE TABLE enrollments (
     grade TEXT,
     enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (student_id, course_id),
-    UNIQUE (student_id, course_id),
     FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 );
@@ -58,7 +57,7 @@ INSERT INTO enrollments (student_id, course_id, grade) VALUES
 
 -- Queries
 
--- 1. All courses for one student (by name): Alice Johnson
+-- 1. All courses for one student (by name): Njomane Johnson
 SELECT c.title, c.code, e.grade
 FROM courses c
 JOIN enrollments e ON c.id = e.course_id
