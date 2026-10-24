@@ -94,15 +94,15 @@ Storing binary photo files (BLOBs) inside a relational database is a performance
                 ┌───────────────▼───────────────┐
                 │       Load Balancer (ALB)     │
                 │  Distributes traffic, SSL term│
-                └──┬─────────  ─┬───────────────┘
+                └──┬────────────┬───────────────┘
                    │            │
-      ┌────────────▼──┐ ┌───── ─▼──────────┐
+      ┌────────────▼──┐ ┌───────▼──────────┐
       │  App Server 1 │ │  App Server 2    │
       │  (REST API)   │ │  (REST API)      │
       │               │ │                  │
       │ • Upload API  │ │ • Feed API       │
       │ • Auth        │ │ • User API       │
-      └──┬───────┬── ─┘ └─ ┬─────────────  ┘
+      └──┬────────────┘ └──┬───────────────┘
          │       │         │
   ┌──────▼──┐ ┌──▼─────────▼──────┐  ┌──────────────────┐
   │  Cache  │ │   Database        │  │      Queue       │
@@ -111,15 +111,15 @@ Storing binary photo files (BLOBs) inside a relational database is a performance
   │ • Feed  │ │ • Users           │  │ • Thumbnail jobs │
   │   pages │ │ • Photo metadata  │  │ • Events         │
   │ • Users │ │ • Follows         │  └──────┬───────────┘
-  └─────────┘ └───┬───────────  ──┘         │
-                  │              ┌───────  ─▼──────────┐
+  └─────────┘ └───┬───────────────┘         │
+                  │              ┌──────────▼──────────┐
                   │              │  Worker             │
                   │              │  (Thumbnail Gen)    │
                   │              │                     │
                   │              │ • Resize 2MB → 50KB │
                   │              │ • Upload to S3      │
                   │              │ • Update DB         │
-                  │              └────────┬─────────── ┘
+                  │              └────────┬────────────┘
                   │                       │
           ┌───────▼───────────────────────▼───────────┐
           │               READ REPLICAS               │
