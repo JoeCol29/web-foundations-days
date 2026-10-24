@@ -80,57 +80,24 @@ Storing binary photo files (BLOBs) inside a relational database is a performance
 ---
 
 ## 5. Architecture Diagram
-                          USERS
-              [Mobile Apps]  [Web Browsers]
-                     │              │
-               HTTPS │              │ HTTPS
-                     ▼              ▼
-                ┌───────────────────────────────┐
-                │          CDN (CloudFront)     │
-                │  Serves cached photos & thumbs│
-                │  from edge locations globally │
-                └───────────────┬───────────────┘
-                                │
-                ┌───────────────▼───────────────┐
-                │       Load Balancer (ALB)     │
-                │  Distributes traffic, SSL term│
-                └──┬────────────┬───────────────┘
-                   │            │
-      ┌────────────▼──┐ ┌───────▼──────────┐
-      │  App Server 1 │ │  App Server 2    │
-      │  (REST API)   │ │  (REST API)      │
-      │               │ │                  │
-      │ • Upload API  │ │ • Feed API       │
-      │ • Auth        │ │ • User API       │
-      └──┬────────────┘ └──┬───────────────┘
-         │       │         │
-  ┌──────▼──┐ ┌──▼─────────▼──────┐  ┌──────────────────┐
-  │  Cache  │ │   Database        │  │      Queue       │
-  │(Redis)  │ │   (Primary)       │  │  (SQS/RabbitMQ)  │
-  │         │ │                   │  │                  │
-  │ • Feed  │ │ • Users           │  │ • Thumbnail jobs │
-  │   pages │ │ • Photo metadata  │  │ • Events         │
-  │ • Users │ │ • Follows         │  └──────┬───────────┘
-  └─────────┘ └───┬───────────────┘         │
-                  │              ┌──────────▼──────────┐
-                  │              │  Worker             │
-                  │              │  (Thumbnail Gen)    │
-                  │              │                     │
-                  │              │ • Resize 2MB → 50KB │
-                  │              │ • Upload to S3      │
-                  │              │ • Update DB         │
-                  │              └────────┬────────────┘
-                  │                       │
-          ┌───────▼───────────────────────▼───────────┐
-          │               READ REPLICAS               │
-          │  Offload feed queries from primary        │
-          └───────────────────────────────────────────┘
+                         
+```mermaid
 
-          ┌────────────────────────────────────────────┐
-          │           OBJECT STORAGE (S3)              │
-          │  Raw photos  │  Thumbnails  │  Metadata    │
-          └────────────────────────────────────────────┘
+graph TD
+    Users[Users: Mobile Apps + Web Browsers] -->|HTTPS| CDN[CDN CloudFront<br/>Serves cached photos & thumbnails<br/>from edge locations globally]
+    CDN -->|HTTPS| LB[Load Balancer ALB<br/>Distributes traffic, SSL termination]
+    LB --> AS1[App Server 1 REST API<br/>• Upload API<br/>• Auth]
+    LB --> AS2[App Server 2 REST API<br/>• Feed API<br/>• User API]
+    AS1 --> Cache[(Cache Redis<br/>• Feed pages<br/>• Users)]
+    AS1 --> DB[(Database Primary<br/>• Users<br/>• Photo metadata<br/>• Follows)]
+    AS1 --> Queue[Queue SQS/RabbitMQ<br/>• Thumbnail jobs<br/>• Events]
+    Queue --> Worker[Worker Thumbnail Gen<br/>• Resize 2MB → 50KB<br/>• Upload to S3<br/>• Update DB]
+    DB --> RR[Read Replicas<br/>Offload feed queries from primary]
+    AS1 --> S3[(Object Storage S3<br/>• Raw photos<br/>• Thumbnails)]
+    Worker --> S3
+    Cache -.-> DB
 
+```
 ---
 
 ## 6. Component Breakdown (One Sentence Each)
