@@ -25,5 +25,6 @@ During the capstone design, I used SQS/RabbitMQ for background jobs (email confi
 understand how to build more complex event-driven systems using tools like Apache Kafka or AWS EventBridge. 
 I'm also interested in learning about**real-time seat availability updates** using WebSockets, so that users can see seats being
 held or sold by others in real-time during a big sale. 
-This would create a more engaging and transparent user experience. Additionally, I want to explore**infrastructure-as-code (Terraform)**to automate the deployment of the entire architecture, which would make scaling and 
-replicating the system much easier.
+This would create a more engaging and transparent user experience. 
+Additionally, I want to explore**infrastructure-as-code (Terraform)**to automate the deployment of the entire architecture, 
+which would make scaling and replicating the system much easier.
