@@ -23,8 +23,8 @@ I would also improve the **error handling** in the API client (from the Day 8 as
 I want to learn about **event-driven architecture and message queues in depth**. 
 During the capstone design, I used SQS/RabbitMQ for background jobs (email confirmations, expired hold cleanup), but I want to
 understand how to build more complex event-driven systems using tools like Apache Kafka or AWS EventBridge. 
-I'm also interested in learning about**real-time seat availability updates** using WebSockets, so that users can see seats being
+I'm also interested in learning about **real-time seat availability updates** using WebSockets, so that users can see seats being
 held or sold by others in real-time during a big sale. 
 This would create a more engaging and transparent user experience. 
-Additionally, I want to explore**infrastructure-as-code (Terraform)**to automate the deployment of the entire architecture, 
+Additionally, I want to explore **infrastructure-as-code (Terraform)**to automate the deployment of the entire architecture, 
 which would make scaling and replicating the system much easier.
